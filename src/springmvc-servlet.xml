@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+							http://www.springframework.org/schema/beans/spring-beans.xsd 
+							http://www.springframework.org/schema/context 
+							http://www.springframework.org/schema/context/spring-context-4.1.xsd 
+							http://www.springframework.org/schema/mvc 
+							http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+							
+	<!-- scan the package and the sub package -->
+	<context:component-scan base-package="com.zhihao.platform.web.controllers com.zhihao.platform.dao com.zhihao.platform.service com.zhihao.platform.web.listener" />
+	
+	<!-- don't handle the static resource -->
+	<mvc:default-servlet-handler />
+	
+	<!-- if you use annotation you must configure following setting -->
+	<mvc:annotation-driven />
+	
+	<!-- 如果当前请求为/ 映射到 zhihaoyu/welcome -->
+	<mvc:view-controller path="/" view-name="forward:zhihaoyu/welcome" />
+	
+	<!-- 静态资源映射 -->
+	<mvc:resources mapping="/js/**" location="/resources/js/" />
+	<mvc:resources mapping="/css/**" location="/resources/css/" />
+	<mvc:resources mapping="/fonts/**" location="/resources/fonts/" />
+	<mvc:resources mapping="/plugins/**" location="/resources/plugins/" />
+	<mvc:resources mapping="/images/**" location="/resources/images/" />
+	<mvc:resources mapping="/img/**" location="/resources/img/" />
+	<mvc:resources mapping="/ckeditor/**" location="/resources/ckeditor/" />
+	<mvc:resources mapping="/photo/**" location="/resources/photo/" />
+	<mvc:resources mapping="/bootstrap/**" location="/resources/bootstrap/" />
+	<mvc:resources mapping="/font-awesome/**" location="/resources/font-awesome/" />
+	
+	<!-- 拦截器定义 -->
+	<mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/blog/**"/>
+            <mvc:mapping path="/user/**"/>
+            <bean id="globalInterceptor" class="com.zhihao.platform.web.interceptor.GlobalInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/blog/**"/>
+            <mvc:mapping path="/user/**"/>
+            <bean id="loginInterceptor" class="com.zhihao.platform.web.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+	
+	
+	<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:/*.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="properties" ref="configProperties"/>
+	</bean>
+	
+	
+	<!-- 当上面要访问的静态资源不包括在上面的配置中时，则根据此配置来访问 -->
+	<mvc:default-servlet-handler/>
+
+	<!-- configure the InternalResourceViewResolver -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		id="internalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<!-- 前缀 -->
+		<property name="prefix" value="/WEB-INF/views/" />
+		<!-- 后缀 -->
+		<property name="suffix" value=".jsp" />
+	</bean>
+	
+	
+    <!-- 用于将对象转换为 JSON 需要三个jackson包的支持 -->
+	<bean id="mappingJacksonHttpMessageConverter"
+          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+        <property name="supportedMediaTypes">
+            <list>
+                <value>application/json;charset=UTF-8</value>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="mappingJacksonHttpMessageConverter"/>
+            </list>
+        </property>
+    </bean>
+    
+	<!-- DB配置 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://localhost:3306/DingdongDB</value>
+		</property>
+		<property name="username">
+			<value>root</value>
+		</property>
+		<property name="password">
+			<value>123</value>
+		</property>
+	</bean>
+	
+	<!-- 这是啥 -->
+	<bean id="multipartResolver"  
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <!--1024*200即200k-->  
+        <property name="maxUploadSize" value="204800"/>  
+        <!--resolveLazily属性启用是为了推迟文件解析，以便在UploadAction 中捕获文件大小异常-->  
+        <property name="resolveLazily" value="true"/>    
+    </bean> 
+    
+
+	
+</beans>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+        "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
+<urlrewrite>
+
+	<!-- showBlogDetail -->
+	<rule>
+        <from>^/article/([0-9]+)(;jsessionid=[a-zA-Z0-9]+)?$</from>
+        <to >/showBlogDetail.action\?id=$1</to>
+    </rule>
+    
+    <!-- listBlog -->
+
+    <rule>
+    	<from>^/blog/([0-9]+)?(;jsessionid=[a-zA-Z0-9]+)?$</from>
+    	<to>/listBlog.action$2\?userId=$1</to>
+    </rule>
+    <!-- <rule>
+    	<from>^/blog/([0-9]+)(;jsessionid=[a-zA-Z0-9]+)?$</from>
+    	<to>/listBlog.action\?userId=$1</to>
+    </rule> -->
+    
+    <rule>
+    	<from>^/blog/([0-9]+)/type/([0-9]+)?(;jsessionid=[a-zA-Z0-9]+)?$</from>
+    	<to>/listBlog.action$3\?userId=$1&amp;blogType=$2</to>
+    </rule>
+
+<!-- 	<rule>
+    	<from>/writeblog</from>
+    	<to>/intoWriteBlog.action</to>
+    </rule>
+    
+    <rule>
+    	<from>/blogmanage</from>
+    	<to>/intoBlogManage.action</to>
+    </rule>
+    
+    <rule>
+    	<from>/userinfo</from>
+    	<to>intoUserInfo.action</to>
+    </rule> -->
+    
+    <rule>
+        <from>^/(.*).html(;jsessionid=[a-zA-Z0-9]+)?$</from>
+        <to type="forward">/$1.action$2</to>
+	</rule>
+	<outbound-rule>  
+	    <from>^/(.*).action$</from>  
+	    <to>/$1.html</to>  
+	</outbound-rule>
+	
+	<rule>
+        <from>^/([a-zA=Z]+).html/([a-zA=Z]+)/([0-9]+)(;jsessionid=[a-zA-Z0-9]+)?$</from>
+        <to>/$1.action$4\?$2=$3</to>
+    </rule>
+    
+    <outbound-rule>  
+	    <from>^/([a-zA=Z]+).action\?$([a-zA=Z]+)=([0-9]+)$</from>  
+	    <to>/$1.html/$2/$3</to>  
+	</outbound-rule>
+    
+</urlrewrite>
+

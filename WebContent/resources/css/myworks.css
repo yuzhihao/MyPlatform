@@ -1,0 +1,83 @@
+/* worklist */
+.mywork{
+	margin-left:2em;
+	height:120px;
+	width:400px;
+	
+}
+.content td{
+	padding:5px;
+	border-collapse: separate;
+}
+.mywork-left{
+	float:left;
+	
+}
+.mywork-left img{
+	width:100px;
+	height:80px;
+}
+.mywork-right{
+	margin-left:1em;
+	max-width:600px;
+}
+
+}
+.mywork-right h4{
+	color:#333;
+	font-weight:600;
+	font-size:1.5em;
+	font-family: 'Varela Round', sans-serif;
+}
+
+/* workDetail */
+
+.work{
+	margin-left:2em;
+	min-height:520px;
+}
+.work h3{
+	
+	color: #FFF;
+	padding: 5px 41px 5px 30px;
+	display: inline-block;
+	background:#4b8bcb;
+	margin-bottom:2em;
+}
+.work h4{
+	font-weight:bold;
+	margin-top:1em;
+	color:#4b8bcb;
+}
+.work-left-right{
+	height:200px;
+}
+.work-left{
+	
+	max-width:200px;
+	max-height:200px;
+	float:left;
+}
+.work-left img{
+	
+	max-width:200px;
+	max-height:200px;
+}
+.work-right{
+	float:left;
+	margin-left:1em;
+	max-width:600px;
+}
+
+.operation{
+	
+}
+.operation a{
+	margin-left:1em;
+}
+.workDescription{
+	
+}
+.workDetail{
+	
+}
